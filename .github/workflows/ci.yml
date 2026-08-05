@@ -1,4 +1,4 @@
-name: Validate phase one
+name: Validate CRM
 
 on:
   pull_request:
