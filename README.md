@@ -11,7 +11,7 @@
 
 ## التشغيل المحلي
 
-1. ثبّت Node.js 20 أو أحدث ثم نفّذ `npm install`.
+1. ثبّت Node.js 22 أو أحدث ثم نفّذ `npm install`.
 2. أنشئ مشروع Supabase محليًا أو سحابيًا.
 3. انسخ `.env.example` إلى `.env.local` وأضف رابط المشروع و`anon key`. لا تضع `service_role` في متغير يبدأ بـ`NEXT_PUBLIC_`.
 4. طبّق ملف `supabase/migrations/202608060001_phase_one.sql` عبر Supabase CLI أو SQL Editor.
