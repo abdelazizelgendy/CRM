@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { AuthShell } from "@/components/auth-shell";
+import { FormMessage } from "@/components/form-message";
+import { registerFromInvitation } from "@/lib/admin-actions";
+export default async function AcceptInvitation({searchParams}:{searchParams:Promise<{token?:string;error?:string}>}){const{token="",error}=await searchParams;return <AuthShell title="قبول دعوة الفريق" subtitle="أنشئ حسابك للانضمام إلى مساحة العمل" footer={<Link href="/login">لديك حساب؟ سجّل الدخول</Link>}><FormMessage error={error}/><form action={registerFromInvitation} className="form-stack"><input type="hidden" name="token" value={token}/><label>الاسم الكامل<input name="fullName" required/></label><label>البريد المدعو<input name="email" type="email" required/></label><div className="field-grid"><label>كلمة المرور<input name="password" type="password" minLength={8} required/></label><label>تأكيدها<input name="confirmPassword" type="password" minLength={8} required/></label></div><button className="primary-button" disabled={!token}>قبول الدعوة وإنشاء الحساب</button></form></AuthShell>}
