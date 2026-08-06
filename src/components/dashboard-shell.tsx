@@ -1,17 +1,118 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Activity, Bell, Building2, ChevronDown, Gauge, KeyRound, Settings, ShieldCheck, UserRound, Users } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  Building2,
+  ChevronDown,
+  ContactRound,
+  Gauge,
+  KeyRound,
+  Settings,
+  ShieldCheck,
+  Tags,
+  UserRound,
+  UserRoundSearch,
+  Users,
+} from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 const items = [
-  ["/dashboard", "الرئيسية", Gauge], ["/dashboard/users", "المستخدمون", Users],
-  ["/dashboard/roles", "الأدوار والصلاحيات", KeyRound], ["/dashboard/audit", "سجل النشاط", Activity],
-  ["/dashboard/settings", "إعدادات الشركة", Settings], ["/dashboard/profile", "الملف الشخصي", UserRound],
+  ["/dashboard", "الرئيسية", Gauge, "dashboard.view"],
+  ["/dashboard/crm", "لوحة CRM", UserRoundSearch, "leads.view"],
+  ["/dashboard/crm/leads", "العملاء المحتملون", UserRoundSearch, "leads.view"],
+  ["/dashboard/crm/customers", "العملاء", Building2, "customers.view"],
+  ["/dashboard/crm/contacts", "جهات الاتصال", ContactRound, "contacts.view"],
+  ["/dashboard/crm/settings", "إعدادات CRM", Tags, "crm.settings.manage"],
+  ["/dashboard/users", "المستخدمون", Users, "users.view"],
+  ["/dashboard/roles", "الأدوار والصلاحيات", KeyRound, "roles.view"],
+  ["/dashboard/audit", "سجل النشاط", Activity, "audit.view"],
+  [
+    "/dashboard/settings",
+    "إعدادات الشركة",
+    Settings,
+    "organization.settings.manage",
+  ],
+  ["/dashboard/profile", "الملف الشخصي", UserRound, "profile.view"],
 ] as const;
 
-export function DashboardShell({ children, company, name, email }: { children: ReactNode; company: string; name: string; email: string }) {
-  return <div className="dashboard-shell">
-    <aside className="sidebar"><div className="brand sidebar-brand"><span><ShieldCheck size={22}/></span> مدار CRM</div><div className="company-chip"><Building2/><div><small>مساحة العمل</small><strong>{company}</strong></div><ChevronDown size={16}/></div><nav>{items.map(([href,label,Icon]) => <Link href={href} key={href}><Icon size={19}/>{label}</Link>)}</nav><div className="soon"><span>قريبًا</span><p>العملاء والمحادثات وعروض الأسعار</p></div></aside>
-    <div className="dashboard-main"><header className="topbar"><div><p>مساء الخير، {name.split(" ")[0]} 👋</p><span>{company}</span></div><div className="top-actions"><button aria-label="الإشعارات"><Bell size={20}/><i/></button><div className="avatar">{name.slice(0,1)}</div><div className="user-meta"><strong>{name}</strong><span>{email}</span></div><form action={signOut}><button className="logout">خروج</button></form></div></header><main className="content">{children}</main></div>
-  </div>;
+export function DashboardShell({
+  children,
+  company,
+  name,
+  email,
+  permissions,
+}: {
+  children: ReactNode;
+  company: string;
+  name: string;
+  email: string;
+  permissions: string[];
+}) {
+  const allowed = new Set(permissions);
+  return (
+    <div className="dashboard-shell">
+      <aside className="sidebar">
+        <div className="brand sidebar-brand">
+          <span>
+            <ShieldCheck size={22} />
+          </span>{" "}
+          مدار CRM
+        </div>
+        <div className="company-chip">
+          <Building2 />
+          <div>
+            <small>مساحة العمل</small>
+            <strong>{company}</strong>
+          </div>
+          <ChevronDown size={16} />
+        </div>
+        <nav>
+          {items
+            .filter(([, , , permission]) => allowed.has(permission))
+            .map(([href, label, Icon]) => (
+              <Link href={href} key={href}>
+                <Icon size={19} />
+                {label}
+              </Link>
+            ))}
+        </nav>
+      </aside>
+      <nav className="mobile-nav" aria-label="التنقل الرئيسي">
+        {items
+          .filter(([, , , permission]) => allowed.has(permission))
+          .map(([href, label, Icon]) => (
+            <Link href={href} key={href}>
+              <Icon size={18} />
+              <span>{label}</span>
+            </Link>
+          ))}
+      </nav>
+      <div className="dashboard-main">
+        <header className="topbar">
+          <div>
+            <p>مساء الخير، {name.split(" ")[0]} 👋</p>
+            <span>{company}</span>
+          </div>
+          <div className="top-actions">
+            <LanguageSwitcher />
+            <button aria-label="الإشعارات">
+              <Bell size={20} />
+              <i />
+            </button>
+            <div className="avatar">{name.slice(0, 1)}</div>
+            <div className="user-meta">
+              <strong>{name}</strong>
+              <span>{email}</span>
+            </div>
+            <form action={signOut}>
+              <button className="logout">خروج</button>
+            </form>
+          </div>
+        </header>
+        <main className="content">{children}</main>
+      </div>
+    </div>
+  );
 }
