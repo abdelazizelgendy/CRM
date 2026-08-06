@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default function Page(){return <><PageTitle title="موافقات عروض الأسعار" description="موافقات متسلسلة مع فصل المنشئ عن المعتمد"/><SalesWorkspace mode="approvals"/></>}

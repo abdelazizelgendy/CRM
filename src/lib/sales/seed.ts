@@ -1,0 +1,47 @@
+import { calculateQuotation } from "./calculations";
+import type { SalesRole, SalesSnapshot, SalesUser } from "./types";
+
+export const SALES_PERMISSIONS=["sales.dashboard.view","sales_requests.view","sales_requests.create","sales_requests.update","sales_requests.assign","sales_requests.change_status","sales_requests.close","sales_requests.export","catalog.view","catalog.manage","catalog.import","catalog.export","quotations.view","quotations.create","quotations.update_draft","quotations.create_revision","quotations.view_cost","quotations.view_margin","quotations.override_price","quotations.override_discount","quotations.submit_for_approval","quotations.approve","quotations.reject","quotations.bypass_approval","quotations.mark_sent","quotations.record_customer_response","quotations.export","quotations.export_pdf","quotation_templates.view","quotation_templates.manage","sales_reports.view"] as const;
+const read=["sales.dashboard.view","sales_requests.view","catalog.view","quotations.view","quotation_templates.view"];
+export const permissionsByRole:Record<SalesRole,string[]>={
+  owner:[...SALES_PERMISSIONS],admin:[...SALES_PERMISSIONS],
+  sales_manager:[...SALES_PERMISSIONS].filter((x)=>x!=="quotations.bypass_approval"),
+  sales_agent:[...read,"sales_requests.create","sales_requests.update","sales_requests.change_status","sales_requests.export","quotations.create","quotations.update_draft","quotations.create_revision","quotations.submit_for_approval","quotations.export","quotations.export_pdf"],
+  customer_service:["sales.dashboard.view","sales_requests.view","sales_requests.create","quotations.view"],
+  accountant:[...read,"quotations.view_cost","quotations.view_margin","sales_reports.view","quotations.export","quotations.export_pdf"],viewer:read,marketing:["sales.dashboard.view","sales_requests.view","sales_reports.view"]
+};
+const org="org-madar-demo",other="org-other-demo",now="2026-08-06T14:00:00.000Z";
+const users:SalesUser[]=[
+  {id:"u-owner",organizationId:org,name:"عبدالعزيز الجندي",role:"owner",permissions:permissionsByRole.owner},
+  {id:"u-admin",organizationId:org,name:"مدير النظام التجريبي",role:"admin",permissions:permissionsByRole.admin},
+  {id:"u-sales",organizationId:org,name:"محمد علي",role:"sales_manager",permissions:permissionsByRole.sales_manager},
+  {id:"u-agent",organizationId:org,name:"ريم خالد",role:"sales_agent",permissions:permissionsByRole.sales_agent},
+  {id:"u-service",organizationId:org,name:"سارة أحمد",role:"customer_service",permissions:permissionsByRole.customer_service},
+  {id:"u-accountant",organizationId:org,name:"أحمد فؤاد",role:"accountant",permissions:permissionsByRole.accountant},
+  {id:"u-viewer",organizationId:org,name:"مشاهد تجريبي",role:"viewer",permissions:permissionsByRole.viewer},
+  {id:"u-marketing",organizationId:org,name:"مسوق تجريبي",role:"marketing",permissions:permissionsByRole.marketing},
+  {id:"u-other",organizationId:other,name:"مالك شركة أخرى",role:"owner",permissions:permissionsByRole.owner},
+];
+export function createSalesSeed():SalesSnapshot{
+ const line1={id:"ql-1",organizationId:org,catalogItemId:"cat-1",code:"DES-ARCH",description:"التصميم المعماري والمخططات التنفيذية",quantityMills:1200000n,unit:"م²",unitPriceMinor:4500n,costMinor:2600n,discountBps:500,taxBps:1500,optional:false,selected:true,sortOrder:1};
+ const line2={id:"ql-2",organizationId:org,catalogItemId:"cat-3",code:"VIS-3D",description:"لقطات منظور ثلاثية الأبعاد",quantityMills:3000n,unit:"لقطة",unitPriceMinor:250000n,costMinor:120000n,discountBps:0,taxBps:1500,optional:true,selected:false,sortOrder:2};
+ const totals=calculateQuotation([line1,line2],[],0);
+ return {users,categories:[
+  {id:"sc-1",organizationId:org,code:"DESIGN",nameAr:"التصميم الهندسي",nameEn:"Engineering Design",active:true,createdAt:now,updatedAt:now,createdBy:"u-owner"},
+  {id:"sc-2",organizationId:org,code:"EVENTS",nameAr:"المعارض والفعاليات",nameEn:"Exhibitions & Events",active:true,createdAt:now,updatedAt:now,createdBy:"u-owner"},
+  {id:"sc-other",organizationId:other,code:"PRIVATE",nameAr:"بيانات شركة أخرى",nameEn:"Other tenant",active:true,createdAt:now,updatedAt:now,createdBy:"u-other"}],
+ catalogItems:[
+  {id:"cat-1",organizationId:org,categoryId:"sc-1",code:"DES-ARCH",nameAr:"تصميم معماري",nameEn:"Architectural Design",descriptionAr:"تصميم ومخططات تنفيذية",descriptionEn:"Design and construction drawings",unit:"م²",currency:"SAR",priceMinor:4500n,costMinor:2600n,taxBps:1500,active:true,version:1,createdAt:now,updatedAt:now,createdBy:"u-owner"},
+  {id:"cat-2",organizationId:org,categoryId:"sc-2",code:"BOOTH",nameAr:"تصميم وتنفيذ جناح",nameEn:"Booth Design & Build",descriptionAr:"باقة جناح متكاملة",descriptionEn:"Complete booth package",unit:"م²",currency:"SAR",priceMinor:180000n,costMinor:125000n,taxBps:1500,active:true,version:1,createdAt:now,updatedAt:now,createdBy:"u-owner"},
+  {id:"cat-3",organizationId:org,categoryId:"sc-1",code:"VIS-3D",nameAr:"منظور ثلاثي الأبعاد",nameEn:"3D Visualization",descriptionAr:"لقطة عالية الجودة",descriptionEn:"High-quality render",unit:"لقطة",currency:"SAR",priceMinor:250000n,costMinor:120000n,taxBps:1500,active:true,version:1,createdAt:now,updatedAt:now,createdBy:"u-owner"}],
+ packages:[{id:"pkg-1",organizationId:org,code:"DESIGN-PRO",nameAr:"باقة التصميم المتكاملة",nameEn:"Complete Design Package",currency:"SAR",items:[{catalogItemId:"cat-1",quantityMills:1000000n},{catalogItemId:"cat-3",quantityMills:3000n}],priceMinor:6000000n,active:true,createdAt:now,updatedAt:now,createdBy:"u-owner"}],
+ requests:[
+  {id:"sr-1",organizationId:org,number:"RFQ-2026-00001",title:"تصميم مشروع إداري في جدة",description:"تصميم معماري وتنفيذي لمبنى إداري بمساحة 1,200 م²",customerId:"customer-demo-1",customerName:"شركة السالم للمقاولات",customerEmail:"ahmed@example.test",customerMobile:"+966500000001",contactId:"contact-demo-1",leadId:"lead-demo-1",conversationId:"c1",source:"WhatsApp",status:"quotation_sent",priority:"urgent",ownerId:"u-sales",expectedValueMinor:6200000n,currency:"SAR",requiredBy:"2026-08-20",version:2,createdAt:now,updatedAt:now,createdBy:"u-service"},
+  {id:"sr-2",organizationId:org,number:"RFQ-2026-00002",title:"تجهيز جناح معرض",description:"تصميم وتنفيذ جناح بمساحة 60 م²",customerId:"customer-demo-2",customerName:"رؤية الفعاليات",customerEmail:"sales@example.test",customerMobile:"+966500000002",conversationId:"c2",source:"Instagram",status:"needs_pricing",priority:"high",ownerId:"u-agent",expectedValueMinor:12000000n,currency:"SAR",version:1,createdAt:now,updatedAt:now,createdBy:"u-service"},
+  {id:"sr-other",organizationId:other,number:"RFQ-2026-00001",title:"طلب خاص",description:"بيانات معزولة",customerId:"customer-other",customerName:"عميل شركة أخرى",source:"Manual",status:"new",priority:"low",ownerId:"u-other",currency:"SAR",version:1,createdAt:now,updatedAt:now,createdBy:"u-other"}],
+ quotations:[{id:"q-1",organizationId:org,number:"QUO-2026-00001",salesRequestId:"sr-1",customerId:"customer-demo-1",contactId:"contact-demo-1",conversationId:"c1",currentVersionId:"qv-1",createdAt:now,updatedAt:now,createdBy:"u-sales"}],
+ versions:[{id:"qv-1",organizationId:org,quotationId:"q-1",versionNumber:1,displayNumber:"QUO-2026-00001-V1",status:"sent",currency:"SAR",language:"bilingual",issueDate:"2026-08-06",expiryDate:"2026-08-21",salesRepresentativeId:"u-sales",title:"عرض تصميم معماري ومخططات تنفيذية",reference:"RFQ-CLIENT-14",duration:"30 يوم عمل",quoteDiscountBps:0,roundingAdjustmentMinor:0n,snapshot:{customerName:"شركة السالم للمقاولات",contactName:"أحمد السالم",companyName:"شركة مدار التجريبية",companyTaxNumber:"300000000000003",lineItems:[line1,line2],charges:[],introduction:"يسعدنا تقديم عرضنا الفني والمالي.",scope:"التصميم المعماري والمخططات التنفيذية.",exclusions:"رسوم الجهات الحكومية.",assumptions:"اعتماد المدخلات خلال خمسة أيام.",paymentTerms:"50% مقدم، 30% عند تسليم المسودة، 20% عند التسليم النهائي.",terms:"صلاحية العرض 15 يومًا.",templateId:"tpl-1"},totals,recordVersion:1,approvedAt:"2026-08-06T14:20:00.000Z",sentAt:"2026-08-06T14:30:00.000Z",createdAt:now,createdBy:"u-sales"}],
+ templates:[{id:"tpl-1",organizationId:org,nameAr:"القالب الرسمي",nameEn:"Corporate Template",language:"bilingual",introduction:"يسعدنا تقديم {{quotation_number}} إلى {{customer_name}}.",scope:"حسب النطاق المرفق",exclusions:"أي أعمال غير مذكورة",assumptions:"توفير المعلومات في وقتها",paymentTerms:"حسب جدول الدفعات",terms:"الأسعار لا تشمل أي رسوم غير منصوص عليها",color:"#0f766e",active:true,isDefault:true,createdAt:now,updatedAt:now}],
+ policies:[{id:"ap-1",organizationId:org,name:"اعتماد عروض المبيعات",minTotalMinor:0n,minDiscountBps:1000,sequential:true,active:true,steps:[{order:1,role:"sales_manager"},{order:2,role:"accountant"}]}],approvalRequests:[],approvalDecisions:[],
+ dispatches:[{id:"d-1",organizationId:org,quotationVersionId:"qv-1",channel:"email_demo",recipient:"ahmed@example.test",subject:"عرض سعر QUO-2026-00001-V1",body:"مرفق العرض التجريبي.",status:"delivered",idempotencyKey:"seed-dispatch-1",createdBy:"u-sales",createdAt:"2026-08-06T14:30:00.000Z"}],responses:[],notifications:[],audit:[],timeline:[{id:"tl-1",organizationId:org,customerId:"customer-demo-1",salesRequestId:"sr-1",quotationId:"q-1",conversationId:"c1",action:"quotation.sent_demo",summary:"إرسال تجريبي للعرض QUO-2026-00001-V1",createdAt:"2026-08-06T14:30:00.000Z",createdBy:"u-sales"}],sequences:{[`${org}:2026:request`]:2,[`${org}:2026:quotation`]:1,[`${other}:2026:request`]:1}};
+}

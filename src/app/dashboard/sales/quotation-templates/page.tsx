@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default function Page(){return <><PageTitle title="قوالب عروض الأسعار" description="قوالب عربية وإنجليزية ومتغيرات آمنة فقط"/><SalesWorkspace mode="templates"/></>}
