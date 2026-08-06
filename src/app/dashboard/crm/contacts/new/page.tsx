@@ -2,15 +2,18 @@ import { FormMessage } from "@/components/form-message";
 import { PageTitle } from "@/components/page-title";
 import { createContact } from "@/lib/crm-actions";
 import { getCrmContext, memberName } from "@/lib/crm-data";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName } from "@/lib/i18n/config";
 export default async function NewContact({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string; customer?: string }>;
 }) {
   const [q, ctx] = await Promise.all([searchParams, getCrmContext()]);
+  const locale = await getLocale();
   const { data: customers } = await ctx.supabase
     .from("customer_accounts")
-    .select("id,name_ar")
+    .select("id,name_ar,name_en")
     .eq("organization_id", ctx.organizationId)
     .is("deleted_at", null)
     .order("name_ar");
@@ -29,7 +32,7 @@ export default async function NewContact({
               <option value="">بدون حساب عميل</option>
               {customers?.map((x) => (
                 <option key={x.id} value={x.id}>
-                  {x.name_ar}
+                  {localizedName(locale, x)}
                 </option>
               ))}
             </select>

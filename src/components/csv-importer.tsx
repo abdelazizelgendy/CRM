@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { importLeads } from "@/lib/crm-actions";
 import { parseCsv } from "@/lib/crm";
-type Option = { id: string; name_ar: string };
+import { LocalizedName } from "@/components/locale-runtime";
+
+type Option = { id: string; name_ar: string; name_en?: string | null };
 export function CsvImporter({
   stages,
   sources,
@@ -83,7 +85,7 @@ export function CsvImporter({
               >
                 {stages.map((x) => (
                   <option value={x.id} key={x.id}>
-                    {x.name_ar}
+                    <LocalizedName ar={x.name_ar} en={x.name_en} />
                   </option>
                 ))}
               </select>
@@ -97,7 +99,7 @@ export function CsvImporter({
                 <option value="">بدون مصدر</option>
                 {sources.map((x) => (
                   <option value={x.id} key={x.id}>
-                    {x.name_ar}
+                    <LocalizedName ar={x.name_ar} en={x.name_en} />
                   </option>
                 ))}
               </select>

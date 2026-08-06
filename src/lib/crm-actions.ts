@@ -397,7 +397,8 @@ export async function createContact(formData: FormData) {
 
 export async function createCrmSetting(formData: FormData) {
   const kind = clean(formData.get("kind"));
-  const name = clean(formData.get("name"));
+  const name = clean(formData.get("nameAr"));
+  const nameEn = clean(formData.get("nameEn"));
   const color = clean(formData.get("color")) || "#0f766e";
   if (!["source", "stage", "tag"].includes(kind) || name.length < 2)
     redirect(
@@ -416,6 +417,8 @@ export async function createCrmSetting(formData: FormData) {
       ? {
           organization_id: membership.organization_id,
           name,
+          name_ar: name,
+          name_en: nameEn || null,
           color,
           created_by: user.id,
         }
@@ -423,6 +426,7 @@ export async function createCrmSetting(formData: FormData) {
         ? {
             organization_id: membership.organization_id,
             name_ar: name,
+            name_en: nameEn || null,
             code,
             color,
             sort_order: Number(formData.get("sortOrder") || 1000),
@@ -431,6 +435,7 @@ export async function createCrmSetting(formData: FormData) {
         : {
             organization_id: membership.organization_id,
             name_ar: name,
+            name_en: nameEn || null,
             code,
             sort_order: Number(formData.get("sortOrder") || 1000),
             created_by: user.id,
@@ -448,7 +453,8 @@ export async function createCrmSetting(formData: FormData) {
 export async function updateCrmSetting(formData: FormData) {
   const kind = clean(formData.get("kind")),
     id = clean(formData.get("id")),
-    name = clean(formData.get("name")),
+    name = clean(formData.get("nameAr")),
+    nameEn = clean(formData.get("nameEn")),
     color = clean(formData.get("color"));
   if (
     !["source", "stage", "tag"].includes(kind) ||
@@ -471,16 +477,18 @@ export async function updateCrmSetting(formData: FormData) {
         : "crm_tags";
   const payload =
     kind === "tag"
-      ? { name, color, is_active: formData.get("isActive") === "on" }
+      ? { name, name_ar: name, name_en: nameEn || null, color, is_active: formData.get("isActive") === "on" }
       : kind === "stage"
         ? {
             name_ar: name,
+            name_en: nameEn || null,
             color,
             sort_order: Number(formData.get("sortOrder") || 0),
             is_active: formData.get("isActive") === "on",
           }
         : {
             name_ar: name,
+            name_en: nameEn || null,
             sort_order: Number(formData.get("sortOrder") || 0),
             is_active: formData.get("isActive") === "on",
           };

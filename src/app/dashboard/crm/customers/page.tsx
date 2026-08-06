@@ -4,12 +4,15 @@ import { FormMessage } from "@/components/form-message";
 import { PageTitle } from "@/components/page-title";
 import { getCrmContext } from "@/lib/crm-data";
 import { statusLabels } from "@/lib/crm";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName } from "@/lib/i18n/config";
 export default async function Customers({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const q = await searchParams;
+  const locale = await getLocale();
   const { supabase, organizationId, permissions } = await getCrmContext();
   const page = Math.max(1, Number(q.page) || 1),
     from = (page - 1) * 20;
@@ -87,8 +90,8 @@ export default async function Customers({
                         className="record-link"
                         href={`/dashboard/crm/customers/${x.id}`}
                       >
-                        <strong>{x.name_ar}</strong>
-                        <small>{x.name_en}</small>
+                        <strong>{localizedName(locale, x)}</strong>
+                        <small>{locale === "ar" ? x.name_en : x.name_ar}</small>
                       </Link>
                     </td>
                     <td>{x.customer_type === "company" ? "شركة" : "فرد"}</td>

@@ -5,6 +5,8 @@ import { InteractionForm } from "@/components/interaction-form";
 import { PageTitle } from "@/components/page-title";
 import { getCrmContext } from "@/lib/crm-data";
 import { statusLabels } from "@/lib/crm";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName, localeTag } from "@/lib/i18n/config";
 export default async function CustomerDetails({
   params,
   searchParams,
@@ -13,6 +15,7 @@ export default async function CustomerDetails({
   searchParams: Promise<{ error?: string; success?: string }>;
 }) {
   const [{ id }, q] = await Promise.all([params, searchParams]);
+  const locale = await getLocale();
   const { supabase, organizationId, permissions } = await getCrmContext();
   const [{ data: customer }, { data: contacts }, { data: interactions }] =
     await Promise.all([
@@ -47,7 +50,7 @@ export default async function CustomerDetails({
   return (
     <>
       <PageTitle
-        title={customer.name_ar}
+        title={localizedName(locale, customer)}
         description={`${customer.customer_type === "company" ? "شركة" : "فرد"} · ${statusLabels[customer.status]}`}
       />
       <FormMessage error={q.error} success={q.success} />
@@ -140,7 +143,7 @@ export default async function CustomerDetails({
                   <div>
                     <strong>{x.description}</strong>
                     <span>
-                      {new Date(x.occurred_at).toLocaleString("ar-SA")}
+                      {new Date(x.occurred_at).toLocaleString(localeTag(locale))}
                     </span>
                   </div>
                 </div>

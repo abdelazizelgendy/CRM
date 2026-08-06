@@ -3,17 +3,20 @@ import { Plus, Search } from "lucide-react";
 import { FormMessage } from "@/components/form-message";
 import { PageTitle } from "@/components/page-title";
 import { getCrmContext } from "@/lib/crm-data";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName } from "@/lib/i18n/config";
 export default async function Contacts({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const q = await searchParams;
+  const locale = await getLocale();
   const { supabase, organizationId, permissions } = await getCrmContext();
   let query = supabase
     .from("contacts")
     .select(
-      "id,full_name,job_title,department,email,mobile,whatsapp,preferred_channel,is_primary,status,customer_accounts(name_ar)",
+      "id,full_name,job_title,department,email,mobile,whatsapp,preferred_channel,is_primary,status,customer_accounts(name_ar,name_en)",
       { count: "exact" },
     )
     .eq("organization_id", organizationId)
@@ -80,8 +83,7 @@ export default async function Contacts({
                       </Link>
                     </td>
                     <td>
-                      {(x.customer_accounts as unknown as { name_ar?: string })
-                        ?.name_ar || "فرد مستقل"}
+                      {x.customer_accounts ? localizedName(locale, x.customer_accounts as {name_ar?:string;name_en?:string}) : "فرد مستقل"}
                     </td>
                     <td>{x.job_title || "—"}</td>
                     <td>{x.mobile || x.email || x.whatsapp || "—"}</td>

@@ -10,8 +10,11 @@ import {
 import { PageTitle } from "@/components/page-title";
 import { getCrmContext, memberName } from "@/lib/crm-data";
 import { currentTime } from "@/lib/time";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName, localeTag } from "@/lib/i18n/config";
 
 export default async function CrmDashboard() {
+  const locale = await getLocale();
   const { supabase, organizationId, stages, sources, members, permissions } =
     await getCrmContext();
   const { data: leads } = await supabase
@@ -125,7 +128,7 @@ export default async function CrmDashboard() {
             <div className="bar-row" key={x.id}>
               <span>
                 <i style={{ background: x.color }} />
-                {x.name_ar}
+                {localizedName(locale, x)}
               </span>
               <div>
                 <b
@@ -144,7 +147,7 @@ export default async function CrmDashboard() {
           {sourceCounts.length ? (
             sourceCounts.map((x) => (
               <div className="rank-row" key={x.id}>
-                <span>{x.name_ar}</span>
+                <span>{localizedName(locale, x)}</span>
                 <strong>{x.count}</strong>
               </div>
             ))
@@ -182,7 +185,7 @@ export default async function CrmDashboard() {
                 <div>
                   <strong>{x.description}</strong>
                   <small>
-                    {new Date(x.created_at).toLocaleString("ar-SA")}
+                    {new Date(x.created_at).toLocaleString(localeTag(locale))}
                   </small>
                 </div>
               </div>

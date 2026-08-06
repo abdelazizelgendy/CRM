@@ -16,6 +16,7 @@ import {
   Users,
 } from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 const items = [
   ["/dashboard", "الرئيسية", Gauge, "dashboard.view"],
@@ -95,6 +96,7 @@ export function DashboardShell({
             <span>{company}</span>
           </div>
           <div className="top-actions">
+            <LanguageSwitcher />
             <button aria-label="الإشعارات">
               <Bell size={20} />
               <i />

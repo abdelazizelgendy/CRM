@@ -1,7 +1,9 @@
 import { createLead, updateLead } from "@/lib/crm-actions";
 import { memberName } from "@/lib/crm-data";
 
-type Option = { id: string; name_ar: string };
+import { LocalizedName } from "@/components/locale-runtime";
+
+type Option = { id: string; name_ar: string; name_en?: string | null };
 type Member = { user_id: string; profiles: unknown };
 type Lead = Record<string, unknown>;
 export function LeadForm({
@@ -100,7 +102,7 @@ export function LeadForm({
             <option value="">بدون مصدر</option>
             {sources.map((x) => (
               <option key={x.id} value={x.id}>
-                {x.name_ar}
+                <LocalizedName ar={x.name_ar} en={x.name_en} />
               </option>
             ))}
           </select>
@@ -114,7 +116,7 @@ export function LeadForm({
           >
             {stages.map((x) => (
               <option key={x.id} value={x.id}>
-                {x.name_ar}
+                <LocalizedName ar={x.name_ar} en={x.name_en} />
               </option>
             ))}
           </select>

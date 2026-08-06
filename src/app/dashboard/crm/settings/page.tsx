@@ -36,8 +36,17 @@ export default async function CrmSettings({
                 <input type="hidden" name="id" value={row.id} />
                 <input type="hidden" name="kind" value={group.kind} />
                 <input
-                  name="name"
-                  defaultValue={"name_ar" in row ? row.name_ar : row.name}
+                  name="nameAr"
+                  defaultValue={row.name_ar || ("name" in row ? row.name : "")}
+                  placeholder="الاسم بالعربية"
+                  aria-label="الاسم بالعربية"
+                />
+                <input
+                  name="nameEn"
+                  dir="ltr"
+                  defaultValue={("name_en" in row && row.name_en) || ""}
+                  placeholder="الاسم بالإنجليزية"
+                  aria-label="الاسم بالإنجليزية"
                 />
                 {group.kind !== "source" && (
                   <input
@@ -69,9 +78,14 @@ export default async function CrmSettings({
             <form action={createCrmSetting} className="setting-row add">
               <input type="hidden" name="kind" value={group.kind} />
               <input
-                name="name"
+                name="nameAr"
                 required
-                placeholder={`إضافة ${group.title}`}
+                placeholder={`إضافة ${group.title} بالعربية`}
+              />
+              <input
+                name="nameEn"
+                dir="ltr"
+                placeholder={`Add ${group.kind} in English`}
               />
               {group.kind !== "source" && (
                 <input

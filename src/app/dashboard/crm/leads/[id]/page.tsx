@@ -6,6 +6,8 @@ import { PageTitle } from "@/components/page-title";
 import { convertLead, mergeLeads } from "@/lib/crm-actions";
 import { getCrmContext } from "@/lib/crm-data";
 import { priorityLabels, statusLabels } from "@/lib/crm";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName, localeTag } from "@/lib/i18n/config";
 export default async function LeadDetails({
   params,
   searchParams,
@@ -14,6 +16,7 @@ export default async function LeadDetails({
   searchParams: Promise<{ error?: string; success?: string }>;
 }) {
   const [{ id }, q] = await Promise.all([params, searchParams]);
+  const locale = await getLocale();
   const { supabase, organizationId, permissions } = await getCrmContext();
   const [
     { data: lead },
@@ -25,7 +28,7 @@ export default async function LeadDetails({
     supabase
       .from("leads")
       .select(
-        "*,lead_stages(name_ar,color),lead_sources(name_ar),profiles!leads_assigned_to_fkey(full_name),customer_accounts!leads_converted_customer_fk(id,name_ar)",
+        "*,lead_stages(name_ar,name_en,color),lead_sources(name_ar,name_en),profiles!leads_assigned_to_fkey(full_name),customer_accounts!leads_converted_customer_fk(id,name_ar,name_en)",
       )
       .eq("id", id)
       .eq("organization_id", organizationId)
@@ -41,7 +44,7 @@ export default async function LeadDetails({
       .order("occurred_at", { ascending: false }),
     supabase
       .from("lead_tags")
-      .select("crm_tags(id,name,color)")
+      .select("crm_tags(id,name,name_ar,name_en,color)")
       .eq("organization_id", organizationId)
       .eq("lead_id", id),
     supabase
@@ -64,9 +67,10 @@ export default async function LeadDetails({
     ?.full_name;
   const stage = lead.lead_stages as unknown as {
     name_ar?: string;
+    name_en?: string;
     color?: string;
   };
-  const source = lead.lead_sources as unknown as { name_ar?: string };
+  const source = lead.lead_sources as unknown as { name_ar?: string; name_en?: string };
   return (
     <>
       <PageTitle
@@ -108,7 +112,7 @@ export default async function LeadDetails({
                   className="stage-pill"
                   style={{ borderColor: stage?.color }}
                 >
-                  {stage?.name_ar}
+                  {stage ? localizedName(locale, stage) : "—"}
                 </span>
               </dd>
             </div>
@@ -122,7 +126,7 @@ export default async function LeadDetails({
             </div>
             <div>
               <dt>المصدر</dt>
-              <dd>{source?.name_ar || "—"}</dd>
+              <dd>{source ? localizedName(locale, source) : "—"}</dd>
             </div>
             <div>
               <dt>المسؤول</dt>
@@ -148,7 +152,7 @@ export default async function LeadDetails({
               <dt>المتابعة القادمة</dt>
               <dd>
                 {lead.next_follow_up_at
-                  ? new Date(lead.next_follow_up_at).toLocaleString("ar-SA")
+                  ? new Date(lead.next_follow_up_at).toLocaleString(localeTag(locale))
                   : "—"}
               </dd>
             </div>
@@ -161,11 +165,13 @@ export default async function LeadDetails({
               const t = x.crm_tags as unknown as {
                 id: string;
                 name: string;
+                name_ar?: string;
+                name_en?: string;
                 color: string;
               };
               return (
                 <span key={t.id} style={{ borderColor: t.color }}>
-                  {t.name}
+                  {localizedName(locale, t)}
                 </span>
               );
             })}

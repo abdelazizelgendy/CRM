@@ -12,6 +12,8 @@ import { FormMessage } from "@/components/form-message";
 import { archiveLeads, changeLeadStage } from "@/lib/crm-actions";
 import { getCrmContext, memberName } from "@/lib/crm-data";
 import { priorityLabels } from "@/lib/crm";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName, localeTag } from "@/lib/i18n/config";
 
 type Query = Promise<Record<string, string | string[] | undefined>>;
 export default async function LeadsPage({
@@ -20,6 +22,7 @@ export default async function LeadsPage({
   searchParams: Query;
 }) {
   const q = await searchParams;
+  const locale = await getLocale();
   const {
     supabase,
     organizationId,
@@ -37,7 +40,7 @@ export default async function LeadsPage({
   let query = supabase
     .from("leads")
     .select(
-      "id,full_name,company_name,email,mobile,city,priority,status,stage_id,source_id,assigned_to,next_follow_up_at,created_at,requested_service,lead_stages(name_ar,color),lead_sources(name_ar),profiles!leads_assigned_to_fkey(full_name)",
+      "id,full_name,company_name,email,mobile,city,priority,status,stage_id,source_id,assigned_to,next_follow_up_at,created_at,requested_service,lead_stages(name_ar,name_en,color),lead_sources(name_ar,name_en),profiles!leads_assigned_to_fkey(full_name)",
       { count: "exact" },
     )
     .eq("organization_id", organizationId)
@@ -126,7 +129,7 @@ export default async function LeadsPage({
           <option value="">كل المراحل</option>
           {stages.map((x) => (
             <option value={x.id} key={x.id}>
-              {x.name_ar}
+              {localizedName(locale, x)}
             </option>
           ))}
         </select>
@@ -134,7 +137,7 @@ export default async function LeadsPage({
           <option value="">كل المصادر</option>
           {sources.map((x) => (
             <option value={x.id} key={x.id}>
-              {x.name_ar}
+              {localizedName(locale, x)}
             </option>
           ))}
         </select>
@@ -158,7 +161,7 @@ export default async function LeadsPage({
           <option value="">كل الوسوم</option>
           {tags.map((x) => (
             <option value={x.id} key={x.id}>
-              {x.name}
+              {localizedName(locale, x)}
             </option>
           ))}
         </select>
@@ -240,13 +243,7 @@ export default async function LeadsPage({
                             )?.color,
                           }}
                         >
-                          {
-                            (
-                              lead.lead_stages as unknown as {
-                                name_ar?: string;
-                              }
-                            )?.name_ar
-                          }
+                          {localizedName(locale, (lead.lead_stages ?? {}) as { name_ar?: string; name_en?: string })}
                         </span>
                       </td>
                       <td>
@@ -261,7 +258,7 @@ export default async function LeadsPage({
                       <td>
                         {lead.next_follow_up_at
                           ? new Date(lead.next_follow_up_at).toLocaleDateString(
-                              "ar-SA",
+                              localeTag(locale),
                             )
                           : "—"}
                       </td>
@@ -302,7 +299,7 @@ export default async function LeadsPage({
             .map((stage) => (
               <section className="kanban-column" key={stage.id}>
                 <header style={{ borderColor: stage.color }}>
-                  <span>{stage.name_ar}</span>
+                  <span>{localizedName(locale, stage)}</span>
                   <b>{leads.filter((x) => x.stage_id === stage.id).length}</b>
                 </header>
                 {leads
@@ -329,7 +326,7 @@ export default async function LeadsPage({
                               .filter((s) => s.is_active)
                               .map((s) => (
                                 <option key={s.id} value={s.id}>
-                                  {s.name_ar}
+                                  {localizedName(locale, s)}
                                 </option>
                               ))}
                           </select>

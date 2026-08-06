@@ -4,6 +4,8 @@ import { FormMessage } from "@/components/form-message";
 import { InteractionForm } from "@/components/interaction-form";
 import { PageTitle } from "@/components/page-title";
 import { getCrmContext } from "@/lib/crm-data";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName, localeTag } from "@/lib/i18n/config";
 export default async function ContactDetails({
   params,
   searchParams,
@@ -12,12 +14,13 @@ export default async function ContactDetails({
   searchParams: Promise<{ error?: string; success?: string }>;
 }) {
   const [{ id }, q] = await Promise.all([params, searchParams]);
+  const locale = await getLocale();
   const { supabase, organizationId, permissions } = await getCrmContext();
   const [{ data: x }, { data: interactions }] = await Promise.all([
     supabase
       .from("contacts")
       .select(
-        "*,customer_accounts(id,name_ar),profiles!contacts_assigned_to_fkey(full_name)",
+        "*,customer_accounts(id,name_ar,name_en),profiles!contacts_assigned_to_fkey(full_name)",
       )
       .eq("organization_id", organizationId)
       .eq("id", id)
@@ -34,6 +37,7 @@ export default async function ContactDetails({
   const customer = x.customer_accounts as unknown as {
     id?: string;
     name_ar?: string;
+    name_en?: string;
   };
   return (
     <>
@@ -48,7 +52,7 @@ export default async function ContactDetails({
               <dd>
                 {customer?.id ? (
                   <Link href={`/dashboard/crm/customers/${customer.id}`}>
-                    {customer.name_ar}
+                    {localizedName(locale, customer)}
                   </Link>
                 ) : (
                   "فرد مستقل"
@@ -98,7 +102,7 @@ export default async function ContactDetails({
                   <div>
                     <strong>{i.description}</strong>
                     <span>
-                      {new Date(i.occurred_at).toLocaleString("ar-SA")}
+                      {new Date(i.occurred_at).toLocaleString(localeTag(locale))}
                     </span>
                   </div>
                 </div>

@@ -1,6 +1,9 @@
 import { csvSafe } from "@/lib/crm";
 import { getWorkspacePermissions } from "@/lib/workspace";
+import { getLocale } from "@/lib/i18n/server";
+import { localizedName } from "@/lib/i18n/config";
 export async function GET(request: Request) {
+  const locale = await getLocale();
   const { supabase, membership, permissions } = await getWorkspacePermissions();
   if (!permissions.has("leads.export"))
     return new Response("Forbidden", { status: 403 });
@@ -8,7 +11,7 @@ export async function GET(request: Request) {
   let query = supabase
     .from("leads")
     .select(
-      "full_name,customer_type,company_name,job_title,email,mobile,whatsapp,country,city,address,priority,requested_service,request_description,status,created_at,lead_stages(name_ar),lead_sources(name_ar)",
+      "full_name,customer_type,company_name,job_title,email,mobile,whatsapp,country,city,address,priority,requested_service,request_description,status,created_at,lead_stages(name_ar,name_en),lead_sources(name_ar,name_en)",
     )
     .eq("organization_id", membership.organization_id)
     .is("deleted_at", null)
@@ -67,8 +70,8 @@ export async function GET(request: Request) {
         x.requested_service,
         x.request_description,
         x.status,
-        (x.lead_stages as unknown as { name_ar?: string })?.name_ar,
-        (x.lead_sources as unknown as { name_ar?: string })?.name_ar,
+        localizedName(locale, (x.lead_stages ?? {}) as { name_ar?: string; name_en?: string }),
+        localizedName(locale, (x.lead_sources ?? {}) as { name_ar?: string; name_en?: string }),
         x.created_at,
       ]
         .map(csvSafe)

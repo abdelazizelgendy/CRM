@@ -11,12 +11,12 @@ export async function getCrmContext() {
   ] = await Promise.all([
     workspace.supabase
       .from("lead_stages")
-      .select("id,name_ar,code,color,sort_order,is_active,is_sensitive")
+      .select("id,name_ar,name_en,code,color,sort_order,is_active,is_sensitive")
       .eq("organization_id", org)
       .order("sort_order"),
     workspace.supabase
       .from("lead_sources")
-      .select("id,name_ar,code,is_active,sort_order")
+      .select("id,name_ar,name_en,code,is_active,sort_order")
       .eq("organization_id", org)
       .order("sort_order"),
     workspace.supabase
@@ -26,7 +26,7 @@ export async function getCrmContext() {
       .eq("status", "active"),
     workspace.supabase
       .from("crm_tags")
-      .select("id,name,color,is_active")
+      .select("id,name,name_ar,name_en,color,is_active")
       .eq("organization_id", org)
       .order("name"),
   ]);
