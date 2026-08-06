@@ -1,7 +1,14 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isLocalProvider } from "@/lib/data-provider";
+import { createLocalSupabaseClient } from "@/lib/local-supabase";
+import { demoPermissions } from "@/lib/inbox/seed";
 
 export async function getWorkspace() {
+  if (isLocalProvider()) {
+    const supabase = createLocalSupabaseClient() as Awaited<ReturnType<typeof createClient>>;
+    return { supabase, user:{id:"u-owner",email:"owner@madar.demo"}, membership:{id:"member-owner",status:"active",organization_id:"org-madar-demo",organizations:{id:"org-madar-demo",name_ar:"شركة مدار التجريبية",name_en:"Madar Demo Company",status:"active"},profiles:{full_name:"عبدالعزيز الجندي",job_title:"مالك الشركة",department_id:null,phone:"+966500000000"}} };
+  }
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -19,6 +26,7 @@ export async function getWorkspace() {
 
 export async function getWorkspacePermissions() {
   const workspace = await getWorkspace();
+  if (isLocalProvider()) return { ...workspace, permissions:new Set(demoPermissions) };
   const { data } = await workspace.supabase.from("user_roles")
     .select("roles(role_permissions(permissions(code)))")
     .eq("organization_id", workspace.membership.organization_id)

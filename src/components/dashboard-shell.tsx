@@ -8,6 +8,7 @@ import {
   ContactRound,
   Gauge,
   KeyRound,
+  MessagesSquare,
   Settings,
   ShieldCheck,
   Tags,
@@ -24,6 +25,7 @@ const items = [
   ["/dashboard/crm/leads", "العملاء المحتملون", UserRoundSearch, "leads.view"],
   ["/dashboard/crm/customers", "العملاء", Building2, "customers.view"],
   ["/dashboard/crm/contacts", "جهات الاتصال", ContactRound, "contacts.view"],
+  ["/dashboard/inbox", "صندوق المحادثات", MessagesSquare, "inbox.view"],
   ["/dashboard/crm/settings", "إعدادات CRM", Tags, "crm.settings.manage"],
   ["/dashboard/users", "المستخدمون", Users, "users.view"],
   ["/dashboard/roles", "الأدوار والصلاحيات", KeyRound, "roles.view"],
@@ -97,10 +99,10 @@ export function DashboardShell({
           </div>
           <div className="top-actions">
             <LanguageSwitcher />
-            <button aria-label="الإشعارات">
+            <Link className="notification-button" href="/dashboard/inbox" aria-label="الإشعارات">
               <Bell size={20} />
               <i />
-            </button>
+            </Link>
             <div className="avatar">{name.slice(0, 1)}</div>
             <div className="user-meta">
               <strong>{name}</strong>
