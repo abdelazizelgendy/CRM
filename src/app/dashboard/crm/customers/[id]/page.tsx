@@ -52,6 +52,7 @@ export default async function CustomerDetails({
       <PageTitle
         title={localizedName(locale, customer)}
         description={`${customer.customer_type === "company" ? "شركة" : "فرد"} · ${statusLabels[customer.status]}`}
+        action={permissions.has("sales_requests.create") ? <Link className="primary-button small" href={{pathname:"/dashboard/sales/requests/new",query:{customerId:id,customerName:localizedName(locale,customer),email:customer.general_email??"",mobile:customer.phone??"",source:"CRM"}}}>إنشاء طلب مبيعات</Link> : undefined}
       />
       <FormMessage error={q.error} success={q.success} />
       <section className="details-grid">

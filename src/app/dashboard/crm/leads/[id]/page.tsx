@@ -80,6 +80,11 @@ export default async function LeadDetails({
         }
         action={
           <div className="page-actions">
+            {permissions.has("sales_requests.create") && (
+              <Link className="primary-button small" href={{pathname:"/dashboard/sales/requests/new",query:{leadId:id,customerId:id,customerName:lead.full_name,email:lead.email??"",mobile:lead.mobile??"",source:"CRM",title:lead.requested_service??""}}}>
+                إنشاء طلب مبيعات
+              </Link>
+            )}
             {permissions.has("leads.update") && (
               <Link
                 className="secondary-button"

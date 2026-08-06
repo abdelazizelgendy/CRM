@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default async function Page({params}:{params:Promise<{id:string}>}){const{id}=await params;return <><PageTitle title="تفاصيل عرض السعر" description="الحسابات والإصدارات والموافقات والسجل"/><SalesWorkspace mode="quotation-detail" id={id}/></>}

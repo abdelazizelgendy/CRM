@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default function Page(){return <><PageTitle title="إنشاء عرض سعر" description="حسابات دقيقة وبنود اختيارية وSnapshot مستقل"/><SalesWorkspace mode="new-quotation"/></>}

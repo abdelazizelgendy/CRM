@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default function Page(){return <><PageTitle title="دليل الخدمات والمنتجات" description="أسعار وتكاليف وفئات وباقات داخل كل شركة"/><SalesWorkspace mode="catalog"/></>}

@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{SalesWorkspace}from"@/components/sales-workspace";export default function Page(){return <><PageTitle title="طلب مبيعات جديد" description="إنشاء يدوي أو من محادثة مع منع التكرار"/><SalesWorkspace mode="new-request"/></>}
