@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="موافقات الفوترة" description="مركز قرارات مستقل مع فصل المنشئ عن المعتمد"/><BillingWorkspace mode="approvals"/></>}

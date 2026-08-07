@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="إشعارات الخصم والإضافة" description="مستندات داخلية مرتبطة بالفاتورة الأصلية"/><BillingWorkspace mode="adjustments"/></>}

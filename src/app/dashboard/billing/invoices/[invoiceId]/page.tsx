@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default async function Page({params}:{params:Promise<{invoiceId:string}>}){const{invoiceId}=await params;return <><PageTitle title="تفاصيل الفاتورة" description="الحسابات والموافقات والرصيد والـSnapshot"/><BillingWorkspace mode="detail" id={invoiceId}/></>}

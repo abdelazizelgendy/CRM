@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="جاهزية الفوترة" description="فحص أهلية دفعات العقود ومنع الفوترة المكررة"/><BillingWorkspace mode="readiness"/></>}
