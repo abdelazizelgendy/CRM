@@ -1,0 +1,2 @@
+import { PageTitle } from "@/components/page-title"; import { ProcurementWorkspace } from "@/components/procurement-workspace";
+export default async function Page({params}:{params:Promise<{purchaseOrderId:string}>}){const{purchaseOrderId}=await params;return <><PageTitle title="تفاصيل أمر الشراء" description="Snapshot والبنود والالتزام والاستلام والفوترة"/><ProcurementWorkspace mode="purchase-order-detail" id={purchaseOrderId}/></>}
