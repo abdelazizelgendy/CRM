@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="كشف حركة العميل" description="كشف تشغيلي محدود ببيانات المرحلة السادسة"/><BillingWorkspace mode="statement"/></>}

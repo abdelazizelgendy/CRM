@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="أعمار الديون" description="الرصيد المفتوح حسب تاريخ As Of والعملات منفصلة"/><BillingWorkspace mode="aging"/></>}

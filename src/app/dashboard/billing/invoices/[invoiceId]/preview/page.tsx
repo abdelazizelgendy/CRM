@@ -1,0 +1,1 @@
+import{BillingWorkspace}from"@/components/billing-workspace";export default async function Page({params}:{params:Promise<{invoiceId:string}>}){const{invoiceId}=await params;return <BillingWorkspace mode="preview" id={invoiceId}/>}

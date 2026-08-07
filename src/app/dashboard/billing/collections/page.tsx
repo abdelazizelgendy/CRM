@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="متابعة التحصيل" description="التواصل والوعود والإجراءات التالية دون إرسال خارجي"/><BillingWorkspace mode="collections"/></>}

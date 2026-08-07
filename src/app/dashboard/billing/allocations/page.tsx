@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="توزيع التحصيلات" description="توزيع ذري يدوي يمنع تجاوز الرصيد واختلاف العميل أو العملة"/><BillingWorkspace mode="allocations"/></>}

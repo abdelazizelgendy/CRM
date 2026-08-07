@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{BillingWorkspace}from"@/components/billing-workspace";export default function Page(){return <><PageTitle title="إعدادات الفوترة" description="الترقيم والاستحقاق والضريبة والتعليمات الداخلية"/><BillingWorkspace mode="settings"/></>}
