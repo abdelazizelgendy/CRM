@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default async function Page({params}:{params:Promise<{contractId:string}>}){const{contractId}=await params;return <><PageTitle title="محرر العقد" description="تحرير المسودة فقط مع كشف تعارض الإصدار"/><ContractsWorkspace mode="edit" id={contractId}/></>}

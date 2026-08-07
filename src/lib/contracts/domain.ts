@@ -1,0 +1,7 @@
+import type { ChangeOrderStatus, ContractStatus, WorkOrderStatus } from "./types";
+
+export const CONTRACT_TRANSITIONS:Record<ContractStatus,readonly ContractStatus[]>={draft:["under_review","cancelled"],under_review:["changes_requested","approved","cancelled"],changes_requested:["under_review","cancelled"],approved:["active","cancelled"],active:["suspended","completed","terminated","expired"],suspended:["active","terminated"],completed:[],cancelled:[],terminated:[],expired:[],superseded:[]};
+export const WORK_ORDER_TRANSITIONS:Record<WorkOrderStatus,readonly WorkOrderStatus[]>={draft:["planned","cancelled"],planned:["ready","cancelled"],ready:["in_progress","on_hold","cancelled"],in_progress:["on_hold","completed","cancelled"],on_hold:["ready","in_progress","cancelled"],completed:["reopened"],cancelled:[],reopened:["in_progress","on_hold","completed","cancelled"]};
+export const CHANGE_ORDER_TRANSITIONS:Record<ChangeOrderStatus,readonly ChangeOrderStatus[]>={draft:["under_review","cancelled"],under_review:["approved","rejected","changes_requested"],changes_requested:["under_review","cancelled"],approved:["applied","cancelled"],rejected:[],applied:[],cancelled:[]};
+export function assertTransition<T extends string>(map:Record<T,readonly T[]>,from:T,to:T){if(!map[from]?.includes(to))throw new Error(`Invalid transition: ${from} -> ${to}`)}
+export function isOverdue(dueDate:string,status:string,today=new Date().toISOString().slice(0,10)){return dueDate<today&&!['completed','cancelled','waived'].includes(status)}
