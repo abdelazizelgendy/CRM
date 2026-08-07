@@ -1,0 +1,2 @@
+import { PageTitle } from "@/components/page-title"; import { ProcurementWorkspace } from "@/components/procurement-workspace";
+export default async function Page({params}:{params:Promise<{supplierId:string}>}){const{supplierId}=await params;return <><PageTitle title="تقييم المورد" description="جودة والتزام واستجابة مع طريقة حساب معلنة"/><ProcurementWorkspace mode="supplier-evaluation" id={supplierId}/></>}

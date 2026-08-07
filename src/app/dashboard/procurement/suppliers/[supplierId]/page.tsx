@@ -1,0 +1,2 @@
+import { PageTitle } from "@/components/page-title"; import { ProcurementWorkspace } from "@/components/procurement-workspace";
+export default async function Page({params}:{params:Promise<{supplierId:string}>}){const{supplierId}=await params;return <><PageTitle title="تفاصيل المورد" description="البيانات والحالة والإصدارات والضوابط"/><ProcurementWorkspace mode="supplier-detail" id={supplierId}/></>}
