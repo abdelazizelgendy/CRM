@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default function Page(){return <><PageTitle title="موافقات العقود" description="فصل المنشئ عن المعتمد مع تعليق إلزامي عند طلب التعديل"/><ContractsWorkspace mode="approvals"/></>}

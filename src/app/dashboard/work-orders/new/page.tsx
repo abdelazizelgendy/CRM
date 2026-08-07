@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default function Page(){return <><PageTitle title="إنشاء أمر عمل" description="من عقد نشط مع قائمة تحقق إلزامية"/><ContractsWorkspace mode="new-work-order"/></>}

@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default function Page(){return <><PageTitle title="تقويم العقود والتنفيذ" description="نهايات العقود واستحقاقات أوامر العمل"/><ContractsWorkspace mode="calendar"/></>}

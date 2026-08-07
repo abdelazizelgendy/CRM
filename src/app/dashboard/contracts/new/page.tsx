@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default function Page(){return <><PageTitle title="إنشاء عقد" description="من Snapshot عرض سعر مقبول ومؤهل فقط"/><ContractsWorkspace mode="new"/></>}

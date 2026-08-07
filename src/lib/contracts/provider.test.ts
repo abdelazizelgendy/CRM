@@ -1,0 +1,2 @@
+import { describe,expect,it } from "vitest";import { LocalContractRepository, SupabaseContractRepository } from "./repository";import { createContractRepository } from "./provider";
+describe("contract data provider",()=>{it("switches adapters without page changes",()=>{expect(createContractRepository("local")).toBeInstanceOf(LocalContractRepository);expect(createContractRepository("supabase")).toBeInstanceOf(SupabaseContractRepository)});it("labels Supabase as an unavailable stub",()=>expect(()=>createContractRepository("supabase").snapshot("x","x")).toThrow(/stub/))});

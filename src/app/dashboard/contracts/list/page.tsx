@@ -1,0 +1,1 @@
+import{PageTitle}from"@/components/page-title";import{ContractsWorkspace}from"@/components/contracts-workspace";export default function Page(){return <><PageTitle title="قائمة العقود" description="بحث وفلاتر وترتيب وتصدير آمن مرتبط بالبيانات"/><ContractsWorkspace mode="list"/></>}
