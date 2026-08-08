@@ -22,6 +22,7 @@ import {
   UserRoundSearch,
   Users,
   BriefcaseBusiness,
+  Warehouse,
 } from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -49,6 +50,7 @@ const items = [
   ["/dashboard/procurement/purchase-orders", "أوامر الشراء", ReceiptText, "purchase_orders.view"],
   ["/dashboard/procurement/reports/project-cost", "تقارير التكلفة", Banknote, "cost_reports.view"],
   ["/dashboard/projects", "إدارة المشاريع", BriefcaseBusiness, "projects.view"],
+  ["/dashboard/inventory", "المخزون والمستودعات", Warehouse, "inventory.view"],
   ["/dashboard/crm/settings", "إعدادات CRM", Tags, "crm.settings.manage"],
   ["/dashboard/users", "المستخدمون", Users, "users.view"],
   ["/dashboard/roles", "الأدوار والصلاحيات", KeyRound, "roles.view"],
