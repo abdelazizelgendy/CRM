@@ -38,8 +38,13 @@ Lint وTypecheck وBuild ناجحة. `npm test` ناجح 227/227؛ منها 47 �
 
 ## Git والنشر
 
-يُحدّث هذا القسم بعد إنشاء Commit ورفع الفرع وفتح Draft PR. لن يُدمج PR ولن يُحوّل إلى Ready.
+- Commit التنفيذ المحلي: `1e5b4d3043a4555efc47147bebc2d24dde4fa9b0`.
+- Commit التنفيذ المنشور عبر GitHub atomic Git data: `86a854104da954d4da7b45f769c8dad0fc551736`.
+- Draft PR: https://github.com/abdelazizelgendy/CRM/pull/9
+- Base: `agent/phase-eight-project-operations`.
+- Head: `agent/phase-nine-inventory-materials`.
+- PR ما زال Draft ومفتوحًا وغير مدمج ولم يُحوّل إلى Ready.
 
-## الحكم قبل النشر
+## الحكم النهائي
 
-قيد التنفيذ — غير جاهزة للاعتماد حتى اكتمال مراجعة Git والنشر وفتح Draft PR ومراجعة CI.
+مكتملة مع ملاحظات — التنفيذ منشور في Draft PR للمراجعة، والتحقق الآلي ناجح. يظل الفحص البصري وتكامل Supabase مؤجلين بالعوائق الموثقة، ولا يجوز اعتبار Migration مطبقة أو التقييم محاسبيًا.
