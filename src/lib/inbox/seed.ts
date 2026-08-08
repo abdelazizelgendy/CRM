@@ -4,13 +4,14 @@ import { CONTRACT_PERMISSIONS } from "../contracts/seed";
 import { BILLING_PERMISSIONS } from "../billing/seed";
 import { PROCUREMENT_PERMISSIONS } from "../procurement/seed";
 import { PROJECT_PERMISSIONS } from "../projects/seed";
+import { inventoryPermissions } from "../inventory/seed";
 
 const org = "org-madar-demo";
 const otherOrg = "org-other-demo";
 const now = new Date("2026-08-06T13:00:00.000Z");
 const ago = (minutes: number) => new Date(now.getTime() - minutes * 60_000).toISOString();
 
-export const demoPermissions = ["dashboard.view","leads.view","customers.view","contacts.view","inbox.view","conversations.view","conversations.reply","conversations.assign","conversations.change_status","conversations.change_priority","conversations.link_crm","conversations.merge","conversations.close","internal_notes.create","canned_responses.view","canned_responses.manage","inbox_settings.manage","inbox_reports.view","notifications.view","profile.view",...SALES_PERMISSIONS,...CONTRACT_PERMISSIONS,...BILLING_PERMISSIONS,...PROCUREMENT_PERMISSIONS,...PROJECT_PERMISSIONS];
+export const demoPermissions = ["dashboard.view","leads.view","customers.view","contacts.view","inbox.view","conversations.view","conversations.reply","conversations.assign","conversations.change_status","conversations.change_priority","conversations.link_crm","conversations.merge","conversations.close","internal_notes.create","canned_responses.view","canned_responses.manage","inbox_settings.manage","inbox_reports.view","notifications.view","profile.view",...SALES_PERMISSIONS,...CONTRACT_PERMISSIONS,...BILLING_PERMISSIONS,...PROCUREMENT_PERMISSIONS,...PROJECT_PERMISSIONS,...inventoryPermissions];
 
 export function createInboxSeed(): InboxSnapshot {
   return {
