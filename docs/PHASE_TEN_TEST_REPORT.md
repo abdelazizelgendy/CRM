@@ -4,6 +4,7 @@
 
 - Baseline قبل التعديل: Lint وTypecheck و227/227 اختبارًا وProduction Build.
 - بعد التنفيذ: 271/271 اختبارًا في 26 ملفًا، منها 44 اختبارًا جديدًا للإنتاج وتكامل المخزون.
+- GitHub Actions: `Validate CRM` run #16 ناجح على Draft PR #10.
 - تغطية: BigInt/rounding، BOM cycles/explosion، snapshots، Maker-Checker، IDOR، permissions، concurrency، idempotency، MRP netting/pegging، sequence/quality، completion، inventory receipt، capacity وoperational cost.
 
 ## يحتاج Supabase
