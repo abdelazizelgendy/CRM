@@ -24,6 +24,7 @@ import {
   BriefcaseBusiness,
   Warehouse,
   Factory,
+  UsersRound,
 } from "lucide-react";
 import { signOut } from "@/lib/auth/actions";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -53,6 +54,7 @@ const items = [
   ["/dashboard/projects", "إدارة المشاريع", BriefcaseBusiness, "projects.view"],
   ["/dashboard/inventory", "المخزون والمستودعات", Warehouse, "inventory.view"],
   ["/dashboard/production", "الإنتاج والتصنيع", Factory, "production.view"],
+  ["/dashboard/hr", "الموارد البشرية", UsersRound, "hr.view"],
   ["/dashboard/crm/settings", "إعدادات CRM", Tags, "crm.settings.manage"],
   ["/dashboard/users", "المستخدمون", Users, "users.view"],
   ["/dashboard/roles", "الأدوار والصلاحيات", KeyRound, "roles.view"],

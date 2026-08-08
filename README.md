@@ -1,4 +1,4 @@
-# مدار CRM — المرحلة العاشرة
+# مدار CRM — المرحلة الحادية عشرة
 
 نظام CRM عربي RTL متعدد الشركات. يبني فوق أساس الهوية والصلاحيات في المرحلة الأولى ويضيف إدارة العملاء المحتملين والعملاء وجهات الاتصال والتفاعلات والوسوم، مع كشف التكرار والتحويل والدمج واستيراد/تصدير CSV.
 
@@ -16,6 +16,8 @@
 
 تضيف المرحلة العاشرة إدارة الإنتاج والتصنيع للمشروعات: Product production profiles وBOM/Routing بإصدارات وSnapshots ثابتة، Work Centers، أوامر إنتاج وبطاقات تشغيل، MRP تشغيلي محدود مع Netting/Pegging، جاهزية المواد، جودة وإتمام واستلام المنتج الجيد في Inventory Ledger، هالك وإعادة تشغيل وتوقفات وتشغيل خارجي، Infinite Capacity Load، وتكلفة تشغيلية غير محاسبية. تبدأ المسارات من `/dashboard/production` ويرتبط إنتاج المشروع في `/dashboard/projects/[id]/production`. لا يوجد APS أو MRP II أو IoT أو Production/WIP Accounting أو Payroll أو GL. Supabase Adapter Stub صريح، وMigration 011 عقد غير مطبق أو مختبر تكامليًا.
 
+تضيف المرحلة الحادية عشرة إدارة الموارد البشرية والقوى العاملة: Worker Master منفصلًا صراحةً عن User وOrganization Membership، هيكلًا وتاريخًا وظيفيًا مؤرخًا، تقاويم وورديات، حضورًا وتصحيحات، إجازات وLeave Ledger، Overtime تشغيليًا، تسوية Attendance/Timesheet/Job Card، تخصيصًا للمشروع والإنتاج، مهارات وشهادات وتدريبًا، Onboarding/Offboarding، أداءً تشغيليًا محميًا، وPayroll Readiness بالدقائق والوحدات فقط. تبدأ المسارات من `/dashboard/hr`. لا يوجد Payroll Engine أو مبالغ رواتب أو Payslips أو GOSI/EOSB/WPS أو بنك أو دفع أو GL. Supabase Adapter Stub صريح، وMigration 012 عقد غير مطبق أو مختبر تكامليًا.
+
 ## التشغيل المحلي دون Supabase
 
 1. انسخ `.env.example` إلى `.env.local` واترك `DATA_PROVIDER=local`.
@@ -30,6 +32,8 @@
 مسارات المرحلة التاسعة تبدأ من `/dashboard/inventory`. الرصيد لا يقبل تعديلًا مباشرًا، بل يشتق من الحركات المرحلة بعد الحجز. لإعادة ضبط البيانات التجريبية استدعِ `resetInventoryDemoRepository()` في اختبار معزول أو أعد تشغيل عملية التطوير. لا تطبق Migration 010 على مشروع حقيقي؛ عقود RPC فيها ترفض التشغيل صراحةً حتى يتم اختبارها تكامليًا.
 
 مسارات المرحلة العاشرة تبدأ من `/dashboard/production`. لإعادة ضبط بيانات الإنتاج المصطنعة استدعِ `resetProductionDemoRepository()` أو أعد تشغيل عملية التطوير. اقتراحات MRP لا تُنشئ أمر شراء أو RFQ أو Release تلقائيًا. استلام المنتج التام يرحّل Good Quantity المعتمدة فقط إلى Inventory Ledger وبـIdempotency، ولا يرحّل Scrap أو Rework. لا تطبق Migration 011 على مشروع حقيقي.
+
+مسارات المرحلة الحادية عشرة تبدأ من `/dashboard/hr`. بيانات العاملين والهوية والشهادات مصطنعة ومحجوبة وفق الصلاحية. لإعادة ضبطها في اختبار معزول استدعِ `resetHrDemoRepository()`. Export الخاص بـPayroll Readiness هو CSV تشغيلي للوحدات والدقائق ولا يعني راتبًا أو دفعًا أو قبول نظام خارجي. لا تطبق Migration 012 على مشروع حقيقي.
 
 يفشل Local Provider في الإنتاج ما لم يضبط `ALLOW_LOCAL_DATA_IN_PRODUCTION=true` صراحةً. هذا المفتاح للاختبارات المعزولة فقط، وليس نشرًا حقيقيًا.
 
