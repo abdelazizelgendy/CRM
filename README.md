@@ -1,4 +1,4 @@
-# مدار CRM — المرحلة التاسعة
+# مدار CRM — المرحلة العاشرة
 
 نظام CRM عربي RTL متعدد الشركات. يبني فوق أساس الهوية والصلاحيات في المرحلة الأولى ويضيف إدارة العملاء المحتملين والعملاء وجهات الاتصال والتفاعلات والوسوم، مع كشف التكرار والتحويل والدمج واستيراد/تصدير CSV.
 
@@ -14,6 +14,8 @@
 
 تضيف المرحلة التاسعة إدارة الأصناف ووحدات القياس والمستودعات والمواقع، وسجل مخزون مشتقًا حصريًا من الحركات المرحلة، وطلبات المواد والحجز والصرف والمرتجعات والتحويلات والجرد والتسويات والتالف وإعادة الطلب. تربط المواد بالمشروع وWBS والمهام وProduction Jobs، وتستخدم Moving Weighted Average كتقييم تشغيلي غير محاسبي. تبدأ المسارات من `/dashboard/inventory` وتظهر مواد المشروع في `/dashboard/projects/[id]/materials`. لا يوجد General Ledger أو Journal Entries أو Accounts Payable أو Supplier Payments أو MRP كامل. Supabase Adapter Stub صريح، وMigration 010 عقد غير مطبق أو مختبر تكامليًا.
 
+تضيف المرحلة العاشرة إدارة الإنتاج والتصنيع للمشروعات: Product production profiles وBOM/Routing بإصدارات وSnapshots ثابتة، Work Centers، أوامر إنتاج وبطاقات تشغيل، MRP تشغيلي محدود مع Netting/Pegging، جاهزية المواد، جودة وإتمام واستلام المنتج الجيد في Inventory Ledger، هالك وإعادة تشغيل وتوقفات وتشغيل خارجي، Infinite Capacity Load، وتكلفة تشغيلية غير محاسبية. تبدأ المسارات من `/dashboard/production` ويرتبط إنتاج المشروع في `/dashboard/projects/[id]/production`. لا يوجد APS أو MRP II أو IoT أو Production/WIP Accounting أو Payroll أو GL. Supabase Adapter Stub صريح، وMigration 011 عقد غير مطبق أو مختبر تكامليًا.
+
 ## التشغيل المحلي دون Supabase
 
 1. انسخ `.env.example` إلى `.env.local` واترك `DATA_PROVIDER=local`.
@@ -26,6 +28,8 @@
 مسارات المرحلة السابعة تبدأ من `/dashboard/procurement`. بيانات الموردين والأسعار والحسابات Seed مصطنعة. كل RFQ وأمر شراء وسند وفاتورة مورد ومعاينة طباعة مستند داخلي تجريبي، ولا يثبت إرسالًا أو استلام أموال أو مخزونًا أو قيدًا محاسبيًا.
 
 مسارات المرحلة التاسعة تبدأ من `/dashboard/inventory`. الرصيد لا يقبل تعديلًا مباشرًا، بل يشتق من الحركات المرحلة بعد الحجز. لإعادة ضبط البيانات التجريبية استدعِ `resetInventoryDemoRepository()` في اختبار معزول أو أعد تشغيل عملية التطوير. لا تطبق Migration 010 على مشروع حقيقي؛ عقود RPC فيها ترفض التشغيل صراحةً حتى يتم اختبارها تكامليًا.
+
+مسارات المرحلة العاشرة تبدأ من `/dashboard/production`. لإعادة ضبط بيانات الإنتاج المصطنعة استدعِ `resetProductionDemoRepository()` أو أعد تشغيل عملية التطوير. اقتراحات MRP لا تُنشئ أمر شراء أو RFQ أو Release تلقائيًا. استلام المنتج التام يرحّل Good Quantity المعتمدة فقط إلى Inventory Ledger وبـIdempotency، ولا يرحّل Scrap أو Rework. لا تطبق Migration 011 على مشروع حقيقي.
 
 يفشل Local Provider في الإنتاج ما لم يضبط `ALLOW_LOCAL_DATA_IN_PRODUCTION=true` صراحةً. هذا المفتاح للاختبارات المعزولة فقط، وليس نشرًا حقيقيًا.
 

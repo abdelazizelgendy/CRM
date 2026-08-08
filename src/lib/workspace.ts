@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isLocalProvider } from "@/lib/data-provider";
 import { createLocalSupabaseClient } from "@/lib/local-supabase";
 import { demoPermissions } from "@/lib/inbox/seed";
+import { productionPermissions } from "@/lib/production/seed";
 
 export async function getWorkspace() {
   if (isLocalProvider()) {
@@ -26,7 +27,7 @@ export async function getWorkspace() {
 
 export async function getWorkspacePermissions() {
   const workspace = await getWorkspace();
-  if (isLocalProvider()) return { ...workspace, permissions:new Set(demoPermissions) };
+  if (isLocalProvider()) return { ...workspace, permissions:new Set([...demoPermissions,...productionPermissions]) };
   const { data } = await workspace.supabase.from("user_roles")
     .select("roles(role_permissions(permissions(code)))")
     .eq("organization_id", workspace.membership.organization_id)
