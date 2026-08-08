@@ -43,6 +43,7 @@ Lint وTypecheck وBuild ناجحة. `npm test` ناجح 227/227؛ منها 47 �
 - Draft PR: https://github.com/abdelazizelgendy/CRM/pull/9
 - Base: `agent/phase-eight-project-operations`.
 - Head: `agent/phase-nine-inventory-materials`.
+- GitHub Actions `Validate CRM` run #13: ناجح للنسخة المنشورة بعد فتح PR.
 - PR ما زال Draft ومفتوحًا وغير مدمج ولم يُحوّل إلى Ready.
 
 ## الحكم النهائي
