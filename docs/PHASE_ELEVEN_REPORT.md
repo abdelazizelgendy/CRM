@@ -18,4 +18,6 @@ Payroll Readiness بالدقائق والوحدات فقط؛ Export ليس دف�
 
 ## النشر
 
-يسجل Commit المنشور وDraft PR وCI بعد النشر. الحكم قبل النشر: **مكتملة محليًا مع ملاحظة تحقق بصري — تنتظر Draft PR وCI**.
+نشر الفرع `agent/phase-eleven-hr-workforce` وفتح Draft PR #11 مقابل `agent/phase-ten-production-manufacturing`. Commit التنفيذ المنشور الأول: `27b2d01f2a925a7fa768614633f33b1a34f4408c`. نجح GitHub Actions `Validate CRM`، التشغيل #18، بجميع خطواته.
+
+الحكم النهائي: **مكتملة مع ملاحظات** — التطبيق والاختبارات والبناء وCI ناجحة، مع بقاء الفحص البصري وSupabase integration غير منفذين، وMigration 012 غير مطبقة. الـPR مسودة ولم يدمج ولم ينشر إلى الإنتاج.
