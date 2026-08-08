@@ -41,6 +41,11 @@
 
 ## النشر
 
-سيُحدّث هذا القسم بعد إنشاء Commit ونشر الفرع وفتح Draft PR. لا يوجد دمج أو تحويل إلى Ready.
+- Commit التنفيذ المحلي: `e46bf54a377fff0df072b6957cf349e183447bcc`.
+- لأن Git HTTPS لا يملك اعتمادًا محليًا، نُشرت الشجرة نفسها ذريًا عبر اتصال GitHub المصرح عند `ff9c880ee9cb9182567b9a214982794164bfe04f`.
+- Draft PR: `https://github.com/abdelazizelgendy/CRM/pull/10`.
+- Base: `agent/phase-nine-inventory-materials`؛ Head: `agent/phase-ten-production-manufacturing`.
+- PR مفتوح كـDraft وغير مدمج ولم يتحول إلى Ready. لم يحدث نشر إنتاجي أو تطبيق Migration.
+- GitHub Actions: قيد المتابعة وقت هذا التحديث.
 
-الحكم الحالي: **قيد التنفيذ — غير جاهزة للاعتماد حتى اكتمال النشر وCI**.
+الحكم الحالي: **مكتملة مع ملاحظات**؛ الملاحظة غير الحرجة هي تعذر الفحص البصري بسبب قيود البيئة، مع انتظار نتيجة CI.
